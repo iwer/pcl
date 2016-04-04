@@ -221,6 +221,13 @@ namespace pcl
 
           void
           setSynchronization (bool enableSync);
+		  
+		  /** \brief Set OpenNI2 mirroring state.
+		  * Some OpenNI2 compatible devices have mirroring enabled by default,
+		  * others not. This flag must be set before starting streams.
+		  */
+		  void
+		  setMirror(bool enableMirror);
 
           bool
           getAutoExposure () const;
@@ -316,6 +323,7 @@ namespace pcl
           bool ir_video_started_;
           bool color_video_started_;
           bool depth_video_started_;
+		  bool mirror_enabled_;
 
           /** \brief distance between the projector and the IR camera in meters*/
           float baseline_;

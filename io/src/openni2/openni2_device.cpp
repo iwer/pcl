@@ -58,7 +58,8 @@ pcl::io::openni2::OpenNI2Device::OpenNI2Device (const std::string& device_URI) :
   openni_device_(),
   ir_video_started_(false),
   color_video_started_(false),
-  depth_video_started_(false)
+  depth_video_started_(false),
+	mirror_enabled_(false)
 {
   openni::Status status = openni::OpenNI::initialize ();
   if (status != openni::STATUS_OK)
@@ -294,7 +295,7 @@ pcl::io::openni2::OpenNI2Device::startIRStream ()
 
   if (stream)
   {
-    stream->setMirroringEnabled (false);
+    stream->setMirroringEnabled (mirror_enabled_);
     stream->addNewFrameListener (ir_frame_listener.get ());
     stream->start ();
     ir_video_started_ = true;
@@ -308,7 +309,7 @@ pcl::io::openni2::OpenNI2Device::startColorStream ()
 
   if (stream)
   {
-    stream->setMirroringEnabled (false);
+    stream->setMirroringEnabled (mirror_enabled_);
     stream->addNewFrameListener (color_frame_listener.get ());
     stream->start ();
     color_video_started_ = true;
@@ -321,7 +322,7 @@ pcl::io::openni2::OpenNI2Device::startDepthStream ()
 
   if (stream)
   {
-    stream->setMirroringEnabled (false);
+    stream->setMirroringEnabled (mirror_enabled_);
     stream->addNewFrameListener (depth_frame_listener.get ());
     stream->start ();
     depth_video_started_ = true;
@@ -434,6 +435,12 @@ pcl::io::openni2::OpenNI2Device::setSynchronization (bool enabled)
   if (rc != openni::STATUS_OK)
     THROW_IO_EXCEPTION ("Enabling depth color synchronization failed: \n%s\n", openni::OpenNI::getExtendedError ());
 }
+
+void
+pcl::io::openni2::OpenNI2Device::setMirror(bool enableMirror) {
+	mirror_enabled_ = enableMirror;
+}
+
 
 const OpenNI2VideoMode
 pcl::io::openni2::OpenNI2Device::getIRVideoMode ()
